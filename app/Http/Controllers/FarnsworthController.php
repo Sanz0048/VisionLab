@@ -42,7 +42,7 @@ class FarnsworthController extends Controller
 
             // Simpan ke tabel tes_buta_warna
             $data = \App\Models\TesButaWarna::create([
-                'users_id'    => auth()->id(),
+                'users_id' => Auth::id(),
                 'skor'        => $skor,
                 'kategori'    => $kategori,
                 'tanggal_tes' => now()->toDateString(),

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tes Buta Warna – Beranda</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo2.png') }}">
 
     <style>
         :root {
@@ -180,7 +180,7 @@
 <body>
 
     <header>
-        <a href="{{ route('home') }}" class="logo">VisionTest</a>
+        <a href="{{ route('home') }}" class="logo">VisionLab</a>
         <nav>
             <a href="{{ route('home') }}">Beranda</a>
             <a href="{{ route('login') }}">Masuk</a>
@@ -205,7 +205,7 @@
             <a href="#">Kebijakan Privasi</a>
             <a href="#">Bantuan</a>
         </div>
-        <p style="margin: 0; font-weight: 500;">&copy; 2026 VisionTest. Dibuat untuk tujuan edukasi.</p>
+        <p style="margin: 0; font-weight: 500;">&copy; 2026 VisionLab. Dibuat untuk tujuan edukasi.</p>
     </footer>
 
 </body>
