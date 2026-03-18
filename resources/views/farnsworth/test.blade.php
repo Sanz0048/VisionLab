@@ -395,13 +395,13 @@
 
         document.getElementById('resetBtn').onclick = buildTest;
 
-        document.getElementById('checkBtn').onclick = () => {
+        document.getElementById('checkBtn').onclick = function() {
             let score = 0;
             const slots = document.querySelectorAll('.slot');
 
             slots.forEach(slot => {
                 if (!slot.firstChild) {
-                    score += 20; // Penalti jika kotak kosong
+                    score += 20;
                 } else {
                     const placedId = parseInt(slot.firstChild.dataset.id);
                     const correctId = parseInt(slot.dataset.correctId);
@@ -409,10 +409,15 @@
                 }
             });
 
+            // Indikator loading sederhana
+            this.innerText = "Menyimpan...";
+            this.disabled = true;
+
             fetch("{{ route('farnsworth.save') }}", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "Accept": "application/json", // Penting agar error terbaca sebagai JSON
                         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
                     },
                     body: JSON.stringify({
@@ -421,15 +426,27 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    resultDiv.style.display = 'block';
-                    resultDiv.innerHTML = `
-                    <h2 style="margin:0; color:var(--primary); font-size: 2rem;">Skor: ${score}</h2>
-                    <p style="margin:5px 0; font-weight:700;">Kategori: ${data.kategori}</p>
-                    <p style="font-size:0.8rem; color:#6b7280;">Semakin rendah skor, semakin baik penglihatan warna Anda.</p>
-                `;
-                    resultDiv.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    if (data.success) {
+                        resultDiv.style.display = 'block';
+                        resultDiv.innerHTML = `
+                <h2 style="margin:0; color:var(--primary); font-size: 2rem;">Skor: ${data.skor}</h2>
+                <p style="margin:5px 0; font-weight:700;">Kategori: ${data.kategori}</p>
+                <p style="font-size:0.8rem; color:#6b7280;">Data berhasil disimpan ke riwayat.</p>
+            `;
+                        resultDiv.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        alert("Gagal menyimpan: " + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Terjadi kesalahan sistem.");
+                })
+                .finally(() => {
+                    this.innerText = "Selesai & Periksa";
+                    this.disabled = false;
                 });
         };
 

@@ -22,32 +22,42 @@ class FarnsworthController extends Controller
 
     public function save(Request $request)
     {
-        $request->validate([
-            'skor' => 'required|integer'
-        ]);
+        try {
+            $request->validate([
+                'skor' => 'required|integer'
+            ]);
 
-        $skor = $request->skor;
+            $skor = $request->skor;
 
-        if ($skor <= 15) {
-            $kategori = 'Normal';
-        } elseif ($skor <= 30) {
-            $kategori = 'Ringan';
-        } elseif ($skor <= 60) {
-            $kategori = 'Sedang';
-        } else {
-            $kategori = 'Berat';
+            // Logika kategori sesuai keinginan Anda
+            if ($skor <= 15) {
+                $kategori = 'Normal';
+            } elseif ($skor <= 30) {
+                $kategori = 'Ringan';
+            } elseif ($skor <= 60) {
+                $kategori = 'Sedang';
+            } else {
+                $kategori = 'Berat';
+            }
+
+            // Simpan ke tabel tes_buta_warna
+            $data = \App\Models\TesButaWarna::create([
+                'users_id'    => auth()->id(),
+                'skor'        => $skor,
+                'kategori'    => $kategori,
+                'tanggal_tes' => now()->toDateString(),
+            ]);
+
+            return response()->json([
+                'success'  => true,
+                'kategori' => $kategori,
+                'skor'     => $skor
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
         }
-
-        TesButaWarna::create([
-            'users_id' => Auth::id(),
-            'skor' => $skor,
-            'kategori' => $kategori,
-            'tanggal_tes' => now()->toDateString(),
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'kategori' => $kategori
-        ]);
     }
 }
