@@ -201,9 +201,9 @@
 
     <footer>
         <div class="footer-links">
-            <a href="#">Tentang</a>
-            <a href="#">Kebijakan Privasi</a>
-            <a href="#">Bantuan</a>
+            <a href="tentang">Tentang</a>
+            <a href="kebijakanprivasi">Kebijakan Privasi</a>
+            <a href="bantuan">Bantuan</a>
         </div>
         <p style="margin: 0; font-weight: 500;">&copy; 2026 VisionLab. Dibuat untuk tujuan edukasi.</p>
     </footer>

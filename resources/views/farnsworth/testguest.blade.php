@@ -239,7 +239,7 @@
         <div class="wrap">
             <div class="test-header">
                 <h1>Uji Gradasi Warna</h1>
-                <p class="lead">Susun 8 kotak per baris sesuai urutan warna yang benar.</p>
+                <p class="lead">Susun 8 kotak per baris sesuai urutan warna yang benar. Disarankan Menggunakan Desktop Mode.</p>
             </div>
 
             <section class="board">
@@ -393,9 +393,10 @@
 
             let kategori = "";
             if (score === 0) kategori = "Penglihatan Warna Sempurna!";
-            else if (score <= 15) kategori = "Sangat Baik";
-            else if (score <= 50) kategori = "Normal";
-            else kategori = "Defisiensi Warna Terdeteksi";
+            else if (score <= 15) kategori = "Normal";
+            else if (score <= 30) kategori = "Ringan";
+            else if (score <= 60) kategori = "Sedang";
+            else kategori = "Berat";
 
             resultDiv.style.display = 'block';
             resultDiv.innerHTML = `

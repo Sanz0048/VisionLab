@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FarnsworthController;
 use App\Http\Controllers\FarnsworthControllerGuest;
+use App\Http\Controllers\VisionController;
 
 Route::get('home', function () {
     return view('welcome');
@@ -17,6 +18,7 @@ Route::get('/farnsworth', [FarnsworthController::class, 'index'])
 // Halaman tes Farnsworth
 Route::get('/farnsworth/test', [FarnsworthController::class, 'test'])
     ->name('farnsworth.test');
+
 
 
 // Pastikan method 'testguest' ada di controller
@@ -35,6 +37,11 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/register', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/tentang', [VisionController::class, 'about'])->name('about');
+Route::get('/bantuan', [VisionController::class, 'help'])->name('help');
+Route::get('/kebijakanprivasi', [VisionController::class, 'privacy'])->name('privacy');
+
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

@@ -247,7 +247,7 @@
         <div class="wrap">
             <div class="test-header">
                 <h1>Uji Gradasi Warna</h1>
-                <p class="lead">Susun 8 kotak per baris sesuai urutan warna yang benar.</p>
+                <p class="lead">Susun 8 kotak per baris sesuai urutan warna yang benar. Disarankan Menggunakan Desktop Mode.</p>
             </div>
 
             <section class="board">
