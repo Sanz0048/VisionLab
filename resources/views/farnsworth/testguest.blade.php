@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Uji Gradasi Warna (Guest) – VisionLab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Uji Gradasi Warna – VisionLab</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo2.png') }}">
 
     <style>
@@ -20,7 +20,10 @@
 
         * {
             box-sizing: border-box;
+            touch-action: none;
         }
+
+        /* Mencegah scroll saat drag di HP */
 
         body {
             margin: 0;
@@ -29,13 +32,12 @@
             background-image: var(--bg-body);
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             background-attachment: fixed;
             background-color: #ffffff;
             color: var(--text-dark);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
 
         header {
@@ -63,124 +65,121 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 30px 15px;
+            padding: 20px 10px;
         }
 
         .wrap {
-            max-width: 700px;
+            max-width: 800px;
             width: 100%;
             background: var(--bg-card);
             border-radius: 30px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .test-header {
             text-align: center;
             margin-bottom: 20px;
+            touch-action: auto;
         }
 
         h1 {
             margin: 0;
-            font-size: 1.6rem;
-            font-weight: 800;
+            font-size: 1.4rem;
         }
 
         .lead {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0.8;
-            margin-top: 5px;
+            touch-action: auto;
         }
 
         .board {
             background: rgba(255, 255, 255, 0.5);
             border-radius: 20px;
-            padding: 20px;
+            padding: 15px;
         }
 
         .row-container {
-            margin-bottom: 25px;
-        }
-
-        .row-title {
-            font-weight: 800;
-            font-size: 0.75rem;
-            margin-bottom: 10px;
-            opacity: 0.6;
-            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
         }
 
         .row {
             display: flex;
-            gap: 8px;
+            gap: 5px;
             align-items: center;
             justify-content: center;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
         .anchor {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            border: 4px solid #1f2937;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 3px solid #1f2937;
             flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .slot {
-            width: 48px;
-            height: 48px;
-            border: 2px dashed rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .tile {
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
             cursor: grab;
             border: 1px solid rgba(0, 0, 0, .1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            touch-action: none;
+            position: relative;
+            z-index: 10;
         }
 
-        .tile:active {
-            cursor: grabbing;
-            transform: scale(1.15);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        /* Tray area (tempat kotak acak) */
+        .tray-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            padding: 10px;
+            min-height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
         }
 
         .controls {
-            margin-top: 25px;
+            margin-top: 20px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             flex-wrap: wrap;
+            touch-action: auto;
         }
 
         button,
         .btn-link {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 50px;
             border: none;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            font-size: 13px;
+            font-size: 12px;
+            touch-action: auto;
         }
 
         .primary {
             background: var(--primary);
             color: #fff;
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
         }
 
         .danger {
@@ -201,27 +200,24 @@
             border-radius: 20px;
             text-align: center;
             border: 3px solid var(--primary);
-            animation: fadeIn 0.4s;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            touch-action: auto;
         }
 
         footer {
             background: rgba(173, 255, 47, 0.9);
-            padding: 1.2rem;
+            padding: 1rem;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
+        }
+
+        /* Class saat menyeret di HP */
+        .dragging {
+            opacity: 0.5;
+            transform: scale(1.2);
+            z-index: 1000 !important;
+            pointer-events: none;
+            position: fixed !important;
         }
     </style>
 </head>
@@ -230,16 +226,14 @@
 
     <header>
         <a href="{{ route('home') }}" class="logo">VisionLab</a>
-        <div style="font-weight: 700; font-size: 0.8rem; color: var(--text-dark); background: rgba(255,255,255,0.5); padding: 5px 15px; border-radius: 20px;">
-            Mode Tamu
-        </div>
+        <div style="font-weight: 700; font-size: 0.7rem; color: var(--text-dark); background: rgba(255,255,255,0.5); padding: 5px 12px; border-radius: 20px;">Mode Tamu</div>
     </header>
 
     <main>
         <div class="wrap">
             <div class="test-header">
                 <h1>Uji Gradasi Warna</h1>
-                <p class="lead">Susun 8 kotak per baris sesuai urutan warna yang benar. Disarankan Menggunakan Desktop Mode.</p>
+                <p class="lead">Sentuh dan geser kotak warna ke kotak putus-putus.</p>
             </div>
 
             <section class="board">
@@ -247,10 +241,10 @@
             </section>
 
             <div class="controls">
-                <a href="{{ route('home') }}" class="btn-link danger">Kembali ke Beranda</a>
-                <button id="checkBtn" class="primary">Selesai & Periksa</button>
+                <a href="{{ route('home') }}" class="btn-link danger">Beranda</a>
+                <button id="checkBtn" class="primary">Selesai</button>
                 <button id="resetBtn" class="secondary">Acak</button>
-                <button id="solveBtn" class="secondary">Jawaban</button>
+                <button id="solveBtn" class="secondary">Bantuan</button>
             </div>
 
             <div id="result" class="result"></div>
@@ -258,7 +252,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 VisionLab. Gunakan kecerahan layar maksimal.</p>
+        <p>&copy; 2026 VisionLab. Disarankan kecerahan layar 100%.</p>
     </footer>
 
     <script>
@@ -266,21 +260,13 @@
         const TILES_PER_ROW = 8;
         const testArea = document.getElementById('testArea');
         const resultDiv = document.getElementById('result');
-        let draggedTile = null;
 
-        const TOTAL_STEPS = ROWS_COUNT * (TILES_PER_ROW + 2);
+        let activeTile = null;
+        let startParent = null;
 
         function getFMColor(index) {
-            const hue = (index * (360 / TOTAL_STEPS));
-            return `hsl(${hue}, 48%, 58%)`;
-        }
-
-        function shuffle(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
+            const total = ROWS_COUNT * (TILES_PER_ROW + 2);
+            return `hsl(${(index * (360 / total))}, 55%, 55%)`;
         }
 
         function buildTest() {
@@ -293,56 +279,44 @@
 
                 const mainRow = document.createElement('div');
                 mainRow.className = 'row';
+                mainRow.dataset.row = r;
 
                 const trayRow = document.createElement('div');
-                trayRow.className = 'row';
+                trayRow.className = 'row tray-row';
+                trayRow.dataset.row = r;
 
                 const startIdx = r * (TILES_PER_ROW + 2);
                 const endIdx = startIdx + (TILES_PER_ROW + 1);
 
-                const leftAnchor = document.createElement('div');
-                leftAnchor.className = 'anchor';
-                leftAnchor.style.background = getFMColor(startIdx);
-                mainRow.appendChild(leftAnchor);
+                // Anchors
+                const leftA = createBox('anchor', getFMColor(startIdx));
+                const rightA = createBox('anchor', getFMColor(endIdx));
 
-                let rowData = [];
+                mainRow.appendChild(leftA);
+                let tilesData = [];
+
                 for (let i = 1; i <= TILES_PER_ROW; i++) {
-                    const currentHueIdx = startIdx + i;
+                    const id = startIdx + i;
                     const slot = document.createElement('div');
                     slot.className = 'slot';
-                    slot.dataset.correctId = currentHueIdx;
+                    slot.dataset.correctId = id;
                     slot.dataset.row = r;
-                    slot.ondragover = e => e.preventDefault();
-                    slot.ondrop = handleDrop;
                     mainRow.appendChild(slot);
 
-                    rowData.push({
-                        id: currentHueIdx,
-                        color: getFMColor(currentHueIdx),
+                    tilesData.push({
+                        id,
+                        color: getFMColor(id),
                         row: r
                     });
                 }
+                mainRow.appendChild(rightA);
 
-                const rightAnchor = document.createElement('div');
-                rightAnchor.className = 'anchor';
-                rightAnchor.style.background = getFMColor(endIdx);
-                mainRow.appendChild(rightAnchor);
-
-                shuffle(rowData).forEach(data => {
-                    const tile = document.createElement('div');
-                    tile.className = 'tile';
-                    tile.draggable = true;
+                // Shuffled Tiles
+                tilesData.sort(() => Math.random() - 0.5).forEach(data => {
+                    const tile = createBox('tile', data.color);
                     tile.dataset.id = data.id;
                     tile.dataset.row = data.row;
-                    tile.style.background = data.color;
-                    tile.ondragstart = () => {
-                        draggedTile = tile;
-                        tile.style.opacity = "0.4";
-                    };
-                    tile.ondragend = () => {
-                        draggedTile = null;
-                        tile.style.opacity = "1";
-                    };
+                    addDragListeners(tile);
                     trayRow.appendChild(tile);
                 });
 
@@ -352,59 +326,102 @@
             }
         }
 
-        function handleDrop(e) {
-            e.preventDefault();
-            if (!draggedTile || draggedTile.dataset.row !== this.dataset.row) return;
+        function createBox(cls, bg) {
+            const div = document.createElement('div');
+            div.className = cls;
+            div.style.background = bg;
+            return div;
+        }
 
-            if (this.firstChild) {
-                const target = this.firstChild;
-                const origin = draggedTile.parentElement;
-                this.appendChild(draggedTile);
-                origin.appendChild(target);
-            } else {
-                this.appendChild(draggedTile);
+        // Logic Drag & Drop Hybrid (Mouse & Touch)
+        function addDragListeners(tile) {
+            // Touch Events (HP)
+            tile.addEventListener('touchstart', (e) => {
+                activeTile = tile;
+                startParent = tile.parentElement;
+                tile.classList.add('dragging');
+            }, {
+                passive: false
+            });
+
+            tile.addEventListener('touchmove', (e) => {
+                if (!activeTile) return;
+                const touch = e.touches[0];
+                activeTile.style.left = touch.clientX - 17 + 'px';
+                activeTile.style.top = touch.clientY - 17 + 'px';
+            }, {
+                passive: false
+            });
+
+            tile.addEventListener('touchend', (e) => {
+                if (!activeTile) return;
+                tile.classList.remove('dragging');
+                activeTile.style.left = '';
+                activeTile.style.top = '';
+
+                const touch = e.changedTouches[0];
+                const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
+                const slot = targetEl ? targetEl.closest('.slot, .tray-row') : null;
+
+                handlePlacement(activeTile, slot);
+                activeTile = null;
+            });
+
+            // Mouse Events (PC)
+            tile.draggable = true;
+            tile.addEventListener('dragstart', () => {
+                activeTile = tile;
+                startParent = tile.parentElement;
+                setTimeout(() => tile.style.opacity = "0.3", 0);
+            });
+            tile.addEventListener('dragend', () => {
+                tile.style.opacity = "1";
+            });
+        }
+
+        // Drop logic untuk PC
+        document.addEventListener('dragover', (e) => e.preventDefault());
+        document.addEventListener('drop', (e) => {
+            const slot = e.target.closest('.slot, .tray-row');
+            handlePlacement(activeTile, slot);
+        });
+
+        function handlePlacement(tile, target) {
+            if (!tile || !target) return;
+
+            // Validasi baris (Hanya boleh drop di baris yang sama)
+            if (target.dataset.row !== tile.dataset.row) return;
+
+            if (target.classList.contains('slot')) {
+                if (target.firstChild) {
+                    // Tukar posisi jika slot sudah ada isinya
+                    startParent.appendChild(target.firstChild);
+                }
+                target.appendChild(tile);
+            } else if (target.classList.contains('tray-row')) {
+                target.appendChild(tile);
             }
         }
 
+        document.getElementById('resetBtn').onclick = buildTest;
         document.getElementById('solveBtn').onclick = () => {
             document.querySelectorAll('.slot').forEach(slot => {
-                const correctTile = document.querySelector(`.tile[data-id='${slot.dataset.correctId}']`);
-                if (correctTile) slot.appendChild(correctTile);
+                const correct = document.querySelector(`.tile[data-id='${slot.dataset.correctId}']`);
+                if (correct) slot.appendChild(correct);
             });
         };
 
-        document.getElementById('resetBtn').onclick = buildTest;
-
         document.getElementById('checkBtn').onclick = () => {
             let score = 0;
-            let complete = true;
-            const slots = document.querySelectorAll('.slot');
-
-            slots.forEach(slot => {
-                if (!slot.firstChild) {
-                    score += 20;
-                    complete = false;
+            document.querySelectorAll('.slot').forEach(slot => {
+                if (slot.firstChild) {
+                    score += Math.abs(parseInt(slot.firstChild.dataset.id) - parseInt(slot.dataset.correctId));
                 } else {
-                    const placedId = parseInt(slot.firstChild.dataset.id);
-                    const correctId = parseInt(slot.dataset.correctId);
-                    score += Math.abs(placedId - correctId);
+                    score += 20;
                 }
             });
-
-            let kategori = "";
-            if (score === 0) kategori = "Penglihatan Warna Sempurna!";
-            else if (score <= 15) kategori = "Normal";
-            else if (score <= 30) kategori = "Ringan";
-            else if (score <= 60) kategori = "Sedang";
-            else kategori = "Berat";
-
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `
-                <h2 style="margin:0; color:var(--primary); font-size: 2rem;">Hasil: ${score}</h2>
-                <p style="margin:5px 0; font-weight:700;">Kategori: ${kategori}</p>
-                ${!complete ? '<p style="color:red; font-size:0.7rem;">*Selesaikan semua kotak untuk hasil akurat</p>' : ''}
-                <p style="font-size:0.8rem; color:#6b7280; margin-top:10px;">Login untuk menyimpan riwayat tes Anda.</p>
-            `;
+            resultDiv.innerHTML = `<h2>Skor: ${score}</h2><p>${score <= 10 ? 'Normal' : 'Buta Warna Ringan/Berat'}</p>`;
             resultDiv.scrollIntoView({
                 behavior: 'smooth'
             });
