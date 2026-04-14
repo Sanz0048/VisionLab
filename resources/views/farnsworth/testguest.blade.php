@@ -20,10 +20,7 @@
 
         * {
             box-sizing: border-box;
-            touch-action: none;
         }
-
-        /* Mencegah scroll saat drag di HP */
 
         body {
             margin: 0;
@@ -38,6 +35,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         header {
@@ -69,7 +67,7 @@
         }
 
         .wrap {
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
             background: var(--bg-card);
             border-radius: 30px;
@@ -80,7 +78,6 @@
         .test-header {
             text-align: center;
             margin-bottom: 20px;
-            touch-action: auto;
         }
 
         h1 {
@@ -91,19 +88,24 @@
         .lead {
             font-size: 0.85rem;
             opacity: 0.8;
-            touch-action: auto;
+            margin-bottom: 10px;
         }
 
+        /* Container Board agar bisa scroll horizontal di HP */
         .board {
             background: rgba(255, 255, 255, 0.5);
             border-radius: 20px;
             padding: 15px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .row-container {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding-bottom: 10px;
             border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+            min-width: 550px;
+            /* Menjaga kotak tetap sejajar horizontal */
         }
 
         .row {
@@ -111,23 +113,23 @@
             gap: 5px;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
+            margin-bottom: 15px;
         }
 
-        .anchor {
-            width: 40px;
-            height: 40px;
+        .anchor,
+        .slot {
+            width: 42px;
+            height: 42px;
             border-radius: 8px;
-            border: 3px solid #1f2937;
             flex-shrink: 0;
         }
 
+        .anchor {
+            border: 3px solid #1f2937;
+        }
+
         .slot {
-            width: 40px;
-            height: 40px;
             border: 2px dashed rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -135,34 +137,35 @@
         }
 
         .tile {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             border-radius: 6px;
             cursor: grab;
             border: 1px solid rgba(0, 0, 0, .1);
             position: relative;
             z-index: 10;
+            touch-action: none;
         }
 
-        /* Tray area (tempat kotak acak) */
         .tray-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
             justify-content: center;
             padding: 10px;
-            min-height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            min-height: 55px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            min-width: 0 !important;
+            /* Tray mengikuti lebar layar */
         }
 
         .controls {
             margin-top: 20px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
-            touch-action: auto;
         }
 
         button,
@@ -173,8 +176,14 @@
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            font-size: 12px;
-            touch-action: auto;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
         }
 
         .primary {
@@ -182,7 +191,7 @@
             color: #fff;
         }
 
-        .danger {
+        .btn-home {
             background: var(--danger);
             color: #fff;
         }
@@ -200,7 +209,6 @@
             border-radius: 20px;
             text-align: center;
             border: 3px solid var(--primary);
-            touch-action: auto;
         }
 
         footer {
@@ -211,13 +219,30 @@
             font-weight: 600;
         }
 
-        /* Class saat menyeret di HP */
         .dragging {
-            opacity: 0.5;
-            transform: scale(1.2);
+            opacity: 0.6;
+            transform: scale(1.4);
             z-index: 1000 !important;
             pointer-events: none;
             position: fixed !important;
+        }
+
+        @media (max-width: 480px) {
+
+            .anchor,
+            .slot {
+                width: 36px;
+                height: 36px;
+            }
+
+            .tile {
+                width: 30px;
+                height: 30px;
+            }
+
+            .row-container {
+                min-width: 450px;
+            }
         }
     </style>
 </head>
@@ -225,15 +250,15 @@
 <body>
 
     <header>
-        <a href="{{ route('home') }}" class="logo">VisionLab</a>
-        <div style="font-weight: 700; font-size: 0.7rem; color: var(--text-dark); background: rgba(255,255,255,0.5); padding: 5px 12px; border-radius: 20px;">Mode Tamu</div>
+        <a href="#" class="logo">VisionLab</a>
+        <div style="font-weight: 700; font-size: 0.75rem; color: var(--text-dark); background: rgba(255,255,255,0.5); padding: 6px 15px; border-radius: 20px;">Mode Tamu</div>
     </header>
 
     <main>
         <div class="wrap">
             <div class="test-header">
                 <h1>Uji Gradasi Warna</h1>
-                <p class="lead">Sentuh dan geser kotak warna ke kotak putus-putus.</p>
+                <p class="lead">Susun kotak warna agar membentuk gradasi yang mulus. (Gunakan scroll horizontal jika kotak terpotong)</p>
             </div>
 
             <section class="board">
@@ -241,7 +266,7 @@
             </section>
 
             <div class="controls">
-                <a href="{{ route('home') }}" class="btn-link danger">Beranda</a>
+                <a href="{{ route('home') }}" class="btn-link btn-home">Kembali</a>
                 <button id="checkBtn" class="primary">Selesai</button>
                 <button id="resetBtn" class="secondary">Acak</button>
                 <button id="solveBtn" class="secondary">Bantuan</button>
@@ -288,13 +313,9 @@
                 const startIdx = r * (TILES_PER_ROW + 2);
                 const endIdx = startIdx + (TILES_PER_ROW + 1);
 
-                // Anchors
-                const leftA = createBox('anchor', getFMColor(startIdx));
-                const rightA = createBox('anchor', getFMColor(endIdx));
+                mainRow.appendChild(createBox('anchor', getFMColor(startIdx)));
 
-                mainRow.appendChild(leftA);
                 let tilesData = [];
-
                 for (let i = 1; i <= TILES_PER_ROW; i++) {
                     const id = startIdx + i;
                     const slot = document.createElement('div');
@@ -302,16 +323,15 @@
                     slot.dataset.correctId = id;
                     slot.dataset.row = r;
                     mainRow.appendChild(slot);
-
                     tilesData.push({
                         id,
                         color: getFMColor(id),
                         row: r
                     });
                 }
-                mainRow.appendChild(rightA);
+                mainRow.appendChild(createBox('anchor', getFMColor(endIdx)));
 
-                // Shuffled Tiles
+                // Acak urutan kotak di tray
                 tilesData.sort(() => Math.random() - 0.5).forEach(data => {
                     const tile = createBox('tile', data.color);
                     tile.dataset.id = data.id;
@@ -333,13 +353,14 @@
             return div;
         }
 
-        // Logic Drag & Drop Hybrid (Mouse & Touch)
         function addDragListeners(tile) {
             // Touch Events (HP)
             tile.addEventListener('touchstart', (e) => {
                 activeTile = tile;
                 startParent = tile.parentElement;
                 tile.classList.add('dragging');
+                const touch = e.touches[0];
+                updatePos(touch.clientX, touch.clientY);
             }, {
                 passive: false
             });
@@ -347,8 +368,8 @@
             tile.addEventListener('touchmove', (e) => {
                 if (!activeTile) return;
                 const touch = e.touches[0];
-                activeTile.style.left = touch.clientX - 17 + 'px';
-                activeTile.style.top = touch.clientY - 17 + 'px';
+                updatePos(touch.clientX, touch.clientY);
+                e.preventDefault();
             }, {
                 passive: false
             });
@@ -369,36 +390,35 @@
 
             // Mouse Events (PC)
             tile.draggable = true;
-            tile.addEventListener('dragstart', () => {
+            tile.addEventListener('dragstart', (e) => {
                 activeTile = tile;
                 startParent = tile.parentElement;
                 setTimeout(() => tile.style.opacity = "0.3", 0);
             });
-            tile.addEventListener('dragend', () => {
-                tile.style.opacity = "1";
-            });
+            tile.addEventListener('dragend', () => tile.style.opacity = "1");
         }
 
-        // Drop logic untuk PC
+        function updatePos(x, y) {
+            if (activeTile) {
+                activeTile.style.left = (x - 20) + 'px';
+                activeTile.style.top = (y - 20) + 'px';
+            }
+        }
+
         document.addEventListener('dragover', (e) => e.preventDefault());
         document.addEventListener('drop', (e) => {
             const slot = e.target.closest('.slot, .tray-row');
-            handlePlacement(activeTile, slot);
+            if (activeTile) handlePlacement(activeTile, slot);
         });
 
         function handlePlacement(tile, target) {
             if (!tile || !target) return;
-
-            // Validasi baris (Hanya boleh drop di baris yang sama)
             if (target.dataset.row !== tile.dataset.row) return;
 
             if (target.classList.contains('slot')) {
-                if (target.firstChild) {
-                    // Tukar posisi jika slot sudah ada isinya
-                    startParent.appendChild(target.firstChild);
-                }
+                if (target.firstChild) startParent.appendChild(target.firstChild);
                 target.appendChild(tile);
-            } else if (target.classList.contains('tray-row')) {
+            } else {
                 target.appendChild(tile);
             }
         }
@@ -417,11 +437,28 @@
                 if (slot.firstChild) {
                     score += Math.abs(parseInt(slot.firstChild.dataset.id) - parseInt(slot.dataset.correctId));
                 } else {
-                    score += 20;
+                    score += 20; // Penalti slot kosong
                 }
             });
+
+            // Logika Kategori Skor
+            let kategori = '';
+            if (score <= 15) {
+                kategori = 'Normal';
+            } else if (score <= 30) {
+                kategori = 'Ringan';
+            } else if (score <= 60) {
+                kategori = 'Sedang';
+            } else {
+                kategori = 'Berat';
+            }
+
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<h2>Skor: ${score}</h2><p>${score <= 10 ? 'Normal' : 'Buta Warna Ringan/Berat'}</p>`;
+            resultDiv.innerHTML = `
+                <h2>Skor Anda: ${score}</h2>
+                <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">Kategori: ${kategori}</p>
+                <p style="font-size: 0.8rem; opacity: 0.7;">Hasil ini bukan diagnosa medis final.</p>
+            `;
             resultDiv.scrollIntoView({
                 behavior: 'smooth'
             });
