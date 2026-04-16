@@ -143,6 +143,11 @@
             opacity: 0.9;
         }
 
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white !important;
+        }
+
         .btn {
             display: inline-block;
             background: var(--primary);
@@ -205,7 +210,17 @@
 
             <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
                 <a class="btn" href="{{ route('farnsworth.test') }}">Mulai Tes Sekarang</a>
-                <a href="{{ route('riwayat') }}" style="color: var(--text-dark); font-weight: 600; text-decoration: none; font-size: 0.9rem;">Lihat Riwayat Tes</a>
+
+                {{-- Cek apakah user yang login memiliki role admin --}}
+                @if(Auth::user()->role === 'admin')
+                <a href="{{ route('kelolaakun') }}" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 1rem; padding: 10px 25px; border: 2px solid var(--primary); border-radius: 50px; transition: all 0.3s ease;">
+                    Kelola Akun
+                </a>
+                @endif
+
+                <a href="{{ route('riwayat') }}" style="color: var(--text-dark); font-weight: 600; text-decoration: none; font-size: 0.9rem; margin-top: 5px;">
+                    Lihat Riwayat Tes
+                </a>
             </div>
         </div>
     </main>

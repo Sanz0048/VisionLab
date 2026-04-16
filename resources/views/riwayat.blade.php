@@ -8,6 +8,37 @@
     <link rel="icon" type="image/png" href="{{ asset('images/logo2.png') }}">
 
     <style>
+        /* Gaya untuk Pagination */
+        .pagination-wrapper {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Jika Anda menggunakan Tailwind (bawaan Laravel), ini sudah otomatis bagus. 
+   Jika tidak, ini styling sederhana untuk tombolnya: */
+        .pagination-wrapper nav {
+            display: flex;
+            gap: 5px;
+        }
+
+        .pagination-wrapper a,
+        .pagination-wrapper span {
+            padding: 8px 14px;
+            background: white;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .pagination-wrapper .active {
+            background: var(--primary);
+            color: white;
+        }
+
         :root {
             --primary: #3b82f6;
             --primary-dark: #2563eb;
@@ -205,16 +236,37 @@
             <div style="text-align: center; margin-bottom: 25px;">
                 <a href="{{ route('welcomelogin') }}" class="btn btn-secondary">← Beranda</a>
                 <a href="{{ route('farnsworth.test') }}" class="btn btn-primary">Mulai Tes Baru</a>
+
+                <a href="{{ route('riwayat.download') }}" class="btn btn-primary" style="background-color: #10b981; margin-left: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                    </svg>
+                    Unduh Rekap PDF
+                </a>
             </div>
 
             <div class="stats-grid">
                 <div class="stat-box">
                     <strong>Total Tes Anda</strong><br>
-                    <span>{{ $results->count() }}</span>
+                    <span>
+                        @php
+                        $totalPribadi = Auth::user()->tesButaWarna()->count();
+                        @endphp
+
+                        @if($totalPribadi > 0)
+                        {{ $totalPribadi }}
+                        @else
+                        Belum pernah
+                        @endif
+                    </span>
                 </div>
+
                 <div class="stat-box">
                     <strong>Skor Terbaik</strong><br>
-                    <span>{{ $results->min('skor') ?? '-' }}</span>
+                    <span>
+                        {{ Auth::user()->tesButaWarna()->min('skor') ?? 'Belum pernah' }}
+                    </span>
                 </div>
             </div>
 

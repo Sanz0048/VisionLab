@@ -46,4 +46,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function tesButaWarna()
+    {
+        // Sesuaikan 'users_id' dengan nama kolom foreign key di tabel tes_buta_warna kamu
+        return $this->hasMany(TesButaWarna::class, 'users_id');
+    }
 }
