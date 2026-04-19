@@ -67,11 +67,12 @@
         }
 
         .wrap {
-            max-width: 850px;
+            max-width: 1100px;
+            /* Diperlebar untuk grid */
             width: 100%;
             background: var(--bg-card);
             border-radius: 30px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
@@ -80,52 +81,40 @@
             margin-bottom: 20px;
         }
 
-        h1 {
-            margin: 0;
-            font-size: 1.4rem;
-        }
-
-        .lead {
-            font-size: 0.85rem;
-            opacity: 0.8;
-            margin-bottom: 10px;
-        }
-
-        /* Container Board agar bisa scroll horizontal di HP */
-        .board {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 15px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        /* GRID SYSTEM UNTUK DESKTOP */
+        #testArea {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* 2 Kolom */
+            gap: 20px;
         }
 
         .row-container {
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
-            min-width: 550px;
-            /* Menjaga kotak tetap sejajar horizontal */
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .row {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             align-items: center;
             justify-content: center;
             margin-bottom: 15px;
         }
 
+        /* UKURAN KOTAK DIPERBESAR */
         .anchor,
         .slot {
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
             flex-shrink: 0;
         }
 
         .anchor {
-            border: 3px solid #1f2937;
+            border: 4px solid #1f2937;
         }
 
         .slot {
@@ -137,9 +126,9 @@
         }
 
         .tile {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
             cursor: grab;
             border: 1px solid rgba(0, 0, 0, .1);
             position: relative;
@@ -153,15 +142,46 @@
             gap: 8px;
             justify-content: center;
             padding: 10px;
-            min-height: 55px;
+            min-height: 65px;
             background: rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            min-width: 0 !important;
-            /* Tray mengikuti lebar layar */
+        }
+
+        /* RESPONSIVE: HP (Stack ke bawah) */
+        @media (max-width: 992px) {
+            #testArea {
+                grid-template-columns: 1fr;
+                /* Jadi 1 kolom */
+            }
+
+            .row-container {
+                overflow-x: auto;
+                /* Scroll jika layar sangat sempit */
+            }
+
+            .row {
+                justify-content: flex-start;
+                /* Agar scroll terasa natural */
+                padding-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .anchor,
+            .slot {
+                width: 45px;
+                height: 45px;
+            }
+
+            .tile {
+                width: 38px;
+                height: 38px;
+            }
         }
 
         .controls {
-            margin-top: 20px;
+            margin-top: 25px;
             display: flex;
             gap: 10px;
             justify-content: center;
@@ -170,15 +190,13 @@
 
         button,
         .btn-link {
-            padding: 12px 20px;
+            padding: 12px 25px;
             border-radius: 50px;
             border: none;
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
+            font-size: 14px;
             transition: 0.2s;
         }
 
@@ -226,24 +244,6 @@
             pointer-events: none;
             position: fixed !important;
         }
-
-        @media (max-width: 480px) {
-
-            .anchor,
-            .slot {
-                width: 36px;
-                height: 36px;
-            }
-
-            .tile {
-                width: 30px;
-                height: 30px;
-            }
-
-            .row-container {
-                min-width: 450px;
-            }
-        }
     </style>
 </head>
 
@@ -258,12 +258,10 @@
         <div class="wrap">
             <div class="test-header">
                 <h1>Uji Gradasi Warna</h1>
-                <p class="lead">Susun kotak warna agar membentuk gradasi yang mulus. (Gunakan scroll horizontal jika kotak terpotong)</p>
+                <p class="lead">Susun kotak warna agar membentuk gradasi yang mulus.</p>
             </div>
 
-            <section class="board">
-                <div id="testArea"></div>
-            </section>
+            <section id="testArea"></section>
 
             <div class="controls">
                 <a href="{{ route('home') }}" class="btn-link btn-home">Kembali</a>
@@ -282,7 +280,7 @@
 
     <script>
         const ROWS_COUNT = 4;
-        const TILES_PER_ROW = 8;
+        const TILES_PER_ROW = 6; // Dikurangi sedikit agar muat 2 kolom di layar PC
         const testArea = document.getElementById('testArea');
         const resultDiv = document.getElementById('result');
 
@@ -291,7 +289,7 @@
 
         function getFMColor(index) {
             const total = ROWS_COUNT * (TILES_PER_ROW + 2);
-            return `hsl(${(index * (360 / total))}, 55%, 55%)`;
+            return `hsl(${(index * (360 / total))}, 60%, 50%)`;
         }
 
         function buildTest() {
@@ -331,7 +329,6 @@
                 }
                 mainRow.appendChild(createBox('anchor', getFMColor(endIdx)));
 
-                // Acak urutan kotak di tray
                 tilesData.sort(() => Math.random() - 0.5).forEach(data => {
                     const tile = createBox('tile', data.color);
                     tile.dataset.id = data.id;
@@ -354,7 +351,6 @@
         }
 
         function addDragListeners(tile) {
-            // Touch Events (HP)
             tile.addEventListener('touchstart', (e) => {
                 activeTile = tile;
                 startParent = tile.parentElement;
@@ -379,16 +375,13 @@
                 tile.classList.remove('dragging');
                 activeTile.style.left = '';
                 activeTile.style.top = '';
-
                 const touch = e.changedTouches[0];
                 const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
                 const slot = targetEl ? targetEl.closest('.slot, .tray-row') : null;
-
                 handlePlacement(activeTile, slot);
                 activeTile = null;
             });
 
-            // Mouse Events (PC)
             tile.draggable = true;
             tile.addEventListener('dragstart', (e) => {
                 activeTile = tile;
@@ -400,8 +393,8 @@
 
         function updatePos(x, y) {
             if (activeTile) {
-                activeTile.style.left = (x - 20) + 'px';
-                activeTile.style.top = (y - 20) + 'px';
+                activeTile.style.left = (x - 25) + 'px';
+                activeTile.style.top = (y - 25) + 'px';
             }
         }
 
@@ -443,22 +436,39 @@
 
             // Logika Kategori Skor
             let kategori = '';
+            let warnaKategori = '';
+
             if (score <= 15) {
                 kategori = 'Normal';
+                warnaKategori = '#10b981'; // Hijau
             } else if (score <= 30) {
                 kategori = 'Ringan';
+                warnaKategori = '#f59e0b'; // Oranye
             } else if (score <= 60) {
                 kategori = 'Sedang';
+                warnaKategori = '#ef4444'; // Merah
             } else {
                 kategori = 'Berat';
+                warnaKategori = '#7f1d1d'; // Merah Tua
             }
 
             resultDiv.style.display = 'block';
             resultDiv.innerHTML = `
-                <h2>Skor Anda: ${score}</h2>
-                <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">Kategori: ${kategori}</p>
-                <p style="font-size: 0.8rem; opacity: 0.7;">Hasil ini bukan diagnosa medis final.</p>
+                <h2 style="margin-bottom: 5px;">Skor Anda: ${score}</h2>
+                <p style="font-size: 1.4rem; font-weight: 800; color: ${warnaKategori}; margin: 0 0 15px 0;">Kategori: ${kategori}</p>
+                
+                <div style="text-align: left; background: #f3f4f6; padding: 15px; border-radius: 15px; font-size: 0.85rem; line-height: 1.5;">
+                    <strong style="display: block; margin-bottom: 8px; border-bottom: 1px solid #ddd;">Panduan Skor:</strong>
+                    <ul style="margin: 0; padding-left: 20px; list-style-type: square;">
+                        <li><strong>0 - 15:</strong> Penglihatan warna normal/sangat baik.</li>
+                        <li><strong>16 - 30:</strong> Defisiensi warna tingkat ringan.</li>
+                        <li><strong>31 - 60:</strong> Defisiensi warna tingkat sedang.</li>
+                        <li><strong>> 60:</strong> Defisiensi warna tingkat berat.</li>
+                    </ul>
+                </div>
+                <p style="font-size: 0.75rem; opacity: 0.7; margin-top: 15px;">*Hasil ini adalah simulasi dan bukan diagnosa medis resmi.</p>
             `;
+
             resultDiv.scrollIntoView({
                 behavior: 'smooth'
             });

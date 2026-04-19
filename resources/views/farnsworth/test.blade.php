@@ -36,8 +36,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            /* Perbaikan: Biarkan body bisa scroll */
-            overflow-y: auto;
             overflow-x: hidden;
         }
 
@@ -70,11 +68,11 @@
         }
 
         .wrap {
-            max-width: 850px;
+            max-width: 1100px;
             width: 100%;
             background: var(--bg-card);
             border-radius: 30px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
@@ -94,41 +92,39 @@
             margin-bottom: 10px;
         }
 
-        /* Perbaikan responsivitas board */
-        .board {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 10px;
-            /* Agar baris kotak tidak kepotong di layar super kecil */
-            overflow-x: auto;
+        /* GRID SYSTEM */
+        #testArea {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
         .row-container {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
-            min-width: 450px;
-            /* Mencegah kotak jadi gepeng di HP */
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .row {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
             justify-content: center;
             margin-bottom: 15px;
         }
 
+        /* UKURAN KOTAK BESAR */
         .anchor,
         .slot {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
             flex-shrink: 0;
         }
 
         .anchor {
-            border: 3px solid #1f2937;
+            border: 4px solid #1f2937;
         }
 
         .slot {
@@ -140,33 +136,61 @@
         }
 
         .tile {
-            width: 34px;
-            height: 34px;
-            border-radius: 6px;
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
             cursor: grab;
             border: 1px solid rgba(0, 0, 0, .1);
             position: relative;
             z-index: 10;
-            flex-shrink: 0;
-            /* Penting: Hanya kotak yang mematikan scroll saat di-drag */
             touch-action: none;
         }
 
         .tray-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
             justify-content: center;
             padding: 10px;
-            min-height: 55px;
+            min-height: 65px;
             background: rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            min-width: 0 !important;
-            /* Tray boleh mengecil sesuai layar */
+        }
+
+        /* RESPONSIVE HP */
+        @media (max-width: 992px) {
+            #testArea {
+                grid-template-columns: 1fr;
+            }
+
+            .row-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .row {
+                justify-content: flex-start;
+                min-width: 500px;
+                padding-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .anchor,
+            .slot {
+                width: 45px;
+                height: 45px;
+            }
+
+            .tile {
+                width: 38px;
+                height: 38px;
+            }
         }
 
         .controls {
-            margin-top: 20px;
+            margin-top: 25px;
             display: flex;
             gap: 10px;
             justify-content: center;
@@ -184,7 +208,7 @@
             font-size: 13px;
             display: inline-flex;
             align-items: center;
-            transition: transform 0.2s;
+            transition: 0.2s;
         }
 
         button:active {
@@ -216,14 +240,6 @@
             border: 3px solid var(--primary);
         }
 
-        footer {
-            background: rgba(173, 255, 47, 0.9);
-            padding: 1rem;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
         .dragging {
             opacity: 0.6;
             transform: scale(1.4);
@@ -232,30 +248,12 @@
             position: fixed !important;
         }
 
-        @media (max-width: 600px) {
-
-            .anchor,
-            .slot {
-                width: 34px;
-                height: 34px;
-            }
-
-            .tile {
-                width: 28px;
-                height: 28px;
-            }
-
-            .row-container {
-                min-width: 380px;
-            }
-
-            .logo {
-                font-size: 1.2rem;
-            }
-
-            h1 {
-                font-size: 1.1rem;
-            }
+        footer {
+            background: rgba(173, 255, 47, 0.9);
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -276,12 +274,10 @@
         <div class="wrap">
             <div class="test-header">
                 <h1>Uji Gradasi Warna</h1>
-                <p class="lead">Geser kotak ke dalam slot putus-putus. (Gunakan scroll horizontal jika kotak terpotong)</p>
+                <p class="lead">Susun kotak warna agar membentuk gradasi yang mulus.</p>
             </div>
 
-            <section class="board">
-                <div id="testArea"></div>
-            </section>
+            <section id="testArea"></section>
 
             <div class="controls">
                 <a href="{{ route('welcomelogin') }}" class="btn-link btn-home">Kembali</a>
@@ -300,7 +296,7 @@
 
     <script>
         const ROWS_COUNT = 4;
-        const TILES_PER_ROW = 8;
+        const TILES_PER_ROW = 6;
         const testArea = document.getElementById('testArea');
         const resultDiv = document.getElementById('result');
 
@@ -309,7 +305,7 @@
 
         function getFMColor(index) {
             const total = ROWS_COUNT * (TILES_PER_ROW + 2);
-            return `hsl(${(index * (360 / total))}, 50%, 55%)`;
+            return `hsl(${(index * (360 / total))}, 60%, 50%)`;
         }
 
         function buildTest() {
@@ -319,11 +315,9 @@
             for (let r = 0; r < ROWS_COUNT; r++) {
                 const container = document.createElement('div');
                 container.className = 'row-container';
-
                 const mainRow = document.createElement('div');
                 mainRow.className = 'row';
                 mainRow.dataset.row = r;
-
                 const trayRow = document.createElement('div');
                 trayRow.className = 'row tray-row';
                 trayRow.dataset.row = r;
@@ -347,7 +341,6 @@
                         row: r
                     });
                 }
-
                 mainRow.appendChild(createBox('anchor', getFMColor(endIdx)));
 
                 tilesData.sort(() => Math.random() - 0.5).forEach(data => {
@@ -386,7 +379,7 @@
                 if (!activeTile) return;
                 const touch = e.touches[0];
                 updatePos(touch.clientX, touch.clientY);
-                e.preventDefault(); // Mencegah scroll hanya saat sedang menarik kotak
+                e.preventDefault();
             }, {
                 passive: false
             });
@@ -396,16 +389,13 @@
                 tile.classList.remove('dragging');
                 activeTile.style.left = '';
                 activeTile.style.top = '';
-
                 const touch = e.changedTouches[0];
                 const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
                 const target = targetEl ? targetEl.closest('.slot, .tray-row') : null;
-
                 handlePlacement(activeTile, target);
                 activeTile = null;
             });
 
-            // PC Drag
             tile.draggable = true;
             tile.addEventListener('dragstart', (e) => {
                 activeTile = tile;
@@ -417,8 +407,8 @@
 
         function updatePos(x, y) {
             if (activeTile) {
-                activeTile.style.left = (x - 17) + 'px';
-                activeTile.style.top = (y - 17) + 'px';
+                activeTile.style.left = (x - 25) + 'px';
+                activeTile.style.top = (y - 25) + 'px';
             }
         }
 
@@ -431,7 +421,6 @@
         function handlePlacement(tile, target) {
             if (!tile || !target) return;
             if (target.dataset.row !== tile.dataset.row) return;
-
             if (target.classList.contains('slot')) {
                 if (target.firstChild) startParent.appendChild(target.firstChild);
                 target.appendChild(tile);
@@ -475,8 +464,24 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
+                        let warnaKategori = score <= 15 ? '#10b981' : score <= 30 ? '#f59e0b' : '#ef4444';
+
                         resultDiv.style.display = 'block';
-                        resultDiv.innerHTML = `<h2>Skor: ${data.skor}</h2><p>Kategori: ${data.kategori}</p><small>Tersimpan di riwayat</small>`;
+                        resultDiv.innerHTML = `
+                        <h2 style="margin-bottom: 5px;">Skor: ${data.skor}</h2>
+                        <p style="font-size: 1.4rem; font-weight: 800; color: ${warnaKategori}; margin-bottom:15px;">Kategori: ${data.kategori}</p>
+                        
+                        <div style="text-align: left; background: #f3f4f6; padding: 15px; border-radius: 15px; font-size: 0.85rem; line-height: 1.5;">
+                            <strong>Panduan Skor:</strong>
+                            <ul style="margin-top: 5px; padding-left: 20px;">
+                                <li><strong>0 - 15:</strong> Normal / Sangat Baik</li>
+                                <li><strong>16 - 30:</strong> Defisiensi Ringan</li>
+                                <li><strong>31 - 60:</strong> Defisiensi Sedang</li>
+                                <li><strong>> 60:</strong> Defisiensi Berat</li>
+                            </ul>
+                        </div>
+                        <p style="font-size: 0.75rem; opacity: 0.7; margin-top: 10px;">Data berhasil disimpan ke riwayat.</p>
+                    `;
                         resultDiv.scrollIntoView({
                             behavior: 'smooth'
                         });
