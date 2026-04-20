@@ -5,27 +5,24 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Foundation\AliasLoader;
-// Import class DomPDF dengan benar
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        // Mendaftarkan Alias PDF agar bisa dipanggil sebagai PDF::loadView()
+        // 1. Paksa daftar Service Provider DomPDF di sini
+        if (class_exists(\Barryvdh\DomPDF\ServiceProvider::class)) {
+            $this->app->register(\Barryvdh\DomPDF\ServiceProvider::class);
+        }
+
+        // 2. Daftarkan Alias
         $loader = AliasLoader::getInstance();
         $loader->alias('PDF', Pdf::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        // Pengaturan pagination bootstrap
         Paginator::useBootstrap();
     }
 }
