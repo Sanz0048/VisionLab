@@ -6,6 +6,15 @@ use App\Http\Controllers\FarnsworthController;
 use App\Http\Controllers\FarnsworthControllerGuest;
 use App\Http\Controllers\kelolaController;
 use App\Http\Controllers\VisionController;
+use App\Http\Controllers\ResultController;
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/debug-hosting', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('clear-compiled');
+    return "Cache Laravel Berhasil Dihapus!";
+});
 
 Route::get('home', function () {
     return view('welcome');
@@ -70,7 +79,7 @@ Route::get('/welcome-dashboard', function () {
     return view('welcomelogin'); // Ganti dengan nama file blade dashboard Anda
 })->name('welcomelogin')->middleware('auth');
 
-use App\Http\Controllers\ResultController;
+
 
 Route::get('/riwayat', [ResultController::class, 'index'])->name('riwayat')->middleware('auth');
 Route::get('/riwayat/download', [ResultController::class, 'downloadPDF'])->name('riwayat.download');
