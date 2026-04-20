@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-// Gunakan class Pdf secara langsung tanpa alias
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf; // Pastikan ini di-import
 use App\Models\TesButaWarna;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ResultController extends Controller
@@ -42,10 +40,8 @@ class ResultController extends Controller
                 ->get();
         }
 
-        // Panggil class Pdf secara eksplisit
-        $pdf = Pdf::loadView('pdf.riwayat', [
-            'results' => $results
-        ]);
+        // Gunakan Facade (ini cara paling aman jika provider sudah terdaftar)
+        $pdf = Pdf::loadView('pdf.riwayat', compact('results'));
 
         return $pdf->download('Rekap_Riwayat_VisionLab.pdf');
     }
