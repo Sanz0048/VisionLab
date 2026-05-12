@@ -11,9 +11,13 @@
         :root {
             --primary: #3b82f6;
             --primary-dark: #2563eb;
+            --danger: #ef4444;
             --text-dark: #1f2937;
+            --text-muted: #6b7280;
             --bg-body: url('/images/splatt.png');
-            --bg-card: greenyellow;
+            /* Menggunakan putih transparan (Glassmorphism) agar konsisten dengan Login */
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --input-bg: #f9fafb;
         }
 
         * {
@@ -23,13 +27,13 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-image: var(--bg-body);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-color: #ffffff;
+            background-color: #f3f4f6;
             color: var(--text-dark);
             display: flex;
             align-items: center;
@@ -39,50 +43,55 @@
 
         .card {
             background: var(--bg-card);
+            backdrop-filter: blur(10px);
             padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            width: 100%;
-            max-width: 400px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 92%;
+            max-width: 420px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
             text-align: center;
         }
 
         h2 {
-            margin: 0 0 10px 0;
+            margin: 0 0 8px 0;
             font-weight: 800;
-            font-size: 2rem;
+            font-size: 1.85rem;
             color: var(--text-dark);
+            letter-spacing: -0.025em;
         }
 
         p.subtitle {
-            margin-bottom: 25px;
-            opacity: 0.8;
-            font-size: 0.9rem;
-            font-weight: 500;
+            margin-bottom: 28px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.5;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             text-align: left;
         }
 
         label {
             font-size: 0.85rem;
-            font-weight: 700;
+            font-weight: 600;
             display: block;
-            margin-bottom: 6px;
-            margin-left: 15px;
+            margin-bottom: 8px;
+            margin-left: 4px;
+            color: var(--text-dark);
         }
 
         input {
             width: 100%;
-            padding: 14px 20px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.9);
-            transition: all 0.3s;
+            padding: 12px 16px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: var(--input-bg);
+            transition: all 0.2s ease;
+            color: var(--text-dark);
         }
 
         input:focus {
@@ -98,62 +107,69 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 50px;
-            font-weight: 700;
+            border-radius: 12px;
+            font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
             margin-top: 10px;
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
         }
 
         .btn:hover {
             background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
         }
 
         .btn-outline {
             display: inline-block;
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.5);
-            color: var(--text-dark);
+            background: transparent;
+            color: var(--text-muted);
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: 700;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            font-weight: 500;
             font-size: 0.85rem;
-            margin-top: 12px;
-            transition: 0.2s;
+            margin-top: 16px;
+            transition: all 0.2s;
         }
 
         .btn-outline:hover {
-            background: white;
+            background: #f9fafb;
+            color: var(--text-dark);
+            border-color: #d1d5db;
         }
 
         .alert {
-            background: #fee2e2;
-            color: #b91c1c;
-            padding: 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
             margin-bottom: 20px;
             text-align: left;
-            border: 1px solid rgba(185, 28, 28, 0.1);
+            border: 1px solid #fee2e2;
         }
 
         .footer-link {
-            margin-top: 20px;
+            margin-top: 24px;
             display: block;
-            font-size: 0.85rem;
-            color: var(--text-dark);
+            font-size: 0.9rem;
+            color: var(--text-muted);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 400;
         }
 
         .footer-link span {
             color: var(--primary);
-            font-weight: 800;
+            font-weight: 600;
+        }
+
+        .footer-link span:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -180,7 +196,7 @@
 
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="name" placeholder="Masukkan nama Anda" value="{{ old('name') }}" required>
+                <input type="text" name="name" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required>
             </div>
 
             <div class="form-group">
